@@ -4,7 +4,7 @@ It is responsible for synchronizing between Firestore and CloudSQL. When the AI 
 
 ## 🛠 Architecture
 
-<img width="818" alt="image" src="https://github.com/RememberMe-2024-SolutionChallenge/realtime-DB-synchronization/assets/54667577/8e400f75-b963-4bcb-a3b5-33cff925ad44">
+![architecture](./docs/assets/architecture.png)
 
 ## ❓ Why did you use this seperate logic?
 
