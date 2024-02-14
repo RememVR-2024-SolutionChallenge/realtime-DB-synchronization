@@ -15,12 +15,13 @@ const pool = mysql.createPool({
   port: process.env.DB_PORT,
   user: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
+  database: process.env.DB_DATABASE,
 });
 
 // Trigger this function when new document adds in Firestore's collection.
-exports.syncFirestoreToMySQL = functions.firestore
-  .document(`${process.env.FIRESTORE_COLLECTION}/{docId}`)
+exports.syncFirestoreToMySQL = functions
+  .region(process.env.GCP_REGION)
+  .firestore.document(`${process.env.FIRESTORE_COLLECTION}/{docId}`)
   .onCreate((snap, context) => {
     const newData = snap.data();
 
@@ -29,8 +30,8 @@ exports.syncFirestoreToMySQL = functions.firestore
 
     // Generate SQL query.
     const sql = `
-        INSERT INTO vr_resource (id, title, type, filePath, createdAt, groupId)
-        VALUES (?, ?, ?, ?, ?, ?)
+        INSERT INTO vr_resource (id, title, type, filePath, groupId)
+        VALUES (?, ?, ?, ?, ?)
       `;
 
     const values = [
@@ -38,7 +39,6 @@ exports.syncFirestoreToMySQL = functions.firestore
       newData.title,
       newData.type,
       newData.filePath,
-      newData.createdAt,
       newData.groupId,
     ];
 
