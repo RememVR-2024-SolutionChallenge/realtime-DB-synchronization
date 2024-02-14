@@ -4,5 +4,23 @@
     "firebase-admin": "^12.0.0",
     "firebase-functions": "^4.7.0",
     "mysql": "^2.18.1"
-  }
+  },
+  "name": "realtime-db-synchronization",
+  "description": "automatically transfer generated VR data from firestore to Cloud SQL (deployed by GCP cloud functions)",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RememberMe-2024-SolutionChallenge/realtime-DB-synchronization.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RememberMe-2024-SolutionChallenge/realtime-DB-synchronization/issues"
+  },
+  "homepage": "https://github.com/RememberMe-2024-SolutionChallenge/realtime-DB-synchronization#readme"
 }
