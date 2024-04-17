@@ -19,7 +19,8 @@ const pool = mysql.createPool({
 });
 
 // Trigger this function when new document adds in Firestore's collection.
-exports.syncFirestoreToMySQL = functions
+// synchronize `VR resource data` to `MySQL` from `firestore`
+exports.sync = functions
   .region(process.env.GCP_REGION)
   .firestore.document(`${process.env.FIRESTORE_COLLECTION}/{docId}`)
   .onCreate((snap, context) => {
@@ -40,6 +41,44 @@ exports.syncFirestoreToMySQL = functions
       newData.type,
       newData.filePath,
       newData.groupId,
+    ];
+
+    // Insert data to MySQL.
+    return new Promise((resolve, reject) => {
+      pool.query(sql, values, (error, results, fields) => {
+        if (error) {
+          console.error(error);
+          reject(error);
+        } else {
+          console.log("Inserted data into MySQL", results);
+          resolve(results);
+        }
+      });
+    });
+  });
+
+// Trigger this function when new document adds in Firestore's collection.
+// synchronize `Sample VR resource data` to `MySQL` from `firestore`
+exports.syncSampleCase = functions
+  .region(process.env.GCP_REGION)
+  .firestore.document(`${process.env.FIRESTORE_SAMPLE_COLLECTION}/{docId}`)
+  .onCreate((snap, context) => {
+    const newData = snap.data();
+
+    // Logging.
+    console.log(`New Firestore document(${context.params.docId}): `, newData);
+
+    // Generate SQL query.
+    const sql = `
+        INSERT INTO sample_vr_resource (id, title, type, filePath)
+        VALUES (?, ?, ?, ?)
+      `;
+
+    const values = [
+      context.params.docId,
+      newData.title,
+      newData.type,
+      newData.filePath,
     ];
 
     // Insert data to MySQL.
