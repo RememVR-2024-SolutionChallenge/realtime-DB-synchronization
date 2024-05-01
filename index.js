@@ -31,8 +31,8 @@ exports.sync = functions
 
     // Generate SQL query.
     const sql = `
-        INSERT INTO vr_resource (id, title, type, filePath, groupId)
-        VALUES (?, ?, ?, ?, ?)
+        INSERT INTO vr_resource (id, title, type, filePath, groupId, isSample)
+        VALUES (?, ?, ?, ?, ?, ?)
       `;
 
     const values = [
@@ -41,6 +41,7 @@ exports.sync = functions
       newData.type,
       newData.filePath,
       newData.groupId,
+      false,
     ];
 
     // Insert data to MySQL.
@@ -70,8 +71,8 @@ exports.syncSampleCase = functions
 
     // Generate SQL query.
     const sql = `
-        INSERT INTO sample_vr_resource (id, title, type, filePath)
-        VALUES (?, ?, ?, ?)
+        INSERT INTO vr_resource (id, title, type, filePath, isSample)
+        VALUES (?, ?, ?, ?, ?)
       `;
 
     const values = [
@@ -79,6 +80,7 @@ exports.syncSampleCase = functions
       newData.title,
       newData.type,
       newData.filePath,
+      true,
     ];
 
     // Insert data to MySQL.
